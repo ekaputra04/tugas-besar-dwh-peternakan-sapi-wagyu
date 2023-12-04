@@ -22,7 +22,8 @@ CREATE TABLE tb_pegawai(
 -- create table tb_wilayah_penjualan
 CREATE TABLE tb_wilayah_penjualan (
   id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  nama_wilayah VARCHAR(64)
+  nama_wilayah VARCHAR(64),
+  kode_pos VARCHAR(10)
 );
 
 -- create table transaksi_daging
@@ -42,7 +43,8 @@ CREATE TABLE tb_transaksi_daging (
 CREATE TABLE tb_jenis_pakan (
   id_jenis_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   nama_jenis_pakan VARCHAR(64),
-  kualitas_pakan INT(10)
+  kualitas_pakan INT(10),
+  harga_pakan DECIMAL(10, 2)
 );
 
 -- create table tb_pemasok_makanan
