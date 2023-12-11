@@ -2,7 +2,7 @@
 CREATE DATABASE db_peternakan_sapi_wagyu;
 
 -- create table pelanggan
-CREATE TABLE tb_pelanggan(
+CREATE TABLE tb_pelanggan (
   id_pelanggan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   nama_pelanggan VARCHAR(64),
   alamat_pelanggan VARCHAR(64),
@@ -11,7 +11,7 @@ CREATE TABLE tb_pelanggan(
 );
 
 -- create table pegawai
-CREATE TABLE tb_pegawai(
+CREATE TABLE tb_pegawai (
   id_pegawai INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   nama_pegawai VARCHAR(64),
   alamat_pegawai VARCHAR(64),
@@ -34,9 +34,9 @@ CREATE TABLE tb_transaksi_daging (
   id_wilayah_penjualan INT,
   tanggal_transaksi DATETIME,
   total_harga DECIMAL(10, 2),
-  FOREIGN KEY id_pelanggan REFERENCES pelanggan(id_pelanggan),
-  FOREIGN KEY id_pegawai REFERENCES pegawai(id_pegawai),
-  FOREIGN KEY id_wilayah_penjualan REFERENCES tb_wilayah_penjualan(id_wilayah_penjualan)
+  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan),
+  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+  FOREIGN KEY (id_wilayah_penjualan) REFERENCES tb_wilayah_penjualan(id_wilayah_penjualan)
 );
 
 -- create table tb_jenis_pakan
@@ -55,7 +55,14 @@ CREATE TABLE tb_pemasok_pakan (
   alamat_pemasok_pakan VARCHAR(64),
   no_telepon_pemasok_pakan VARCHAR(12),
   email_pemasok_pakan VARCHAR(64),
-  FOREIGN KEY id_jenis_pakan REFERENCES tb_jenis_pakan(id_jenis_pakan)
+  FOREIGN KEY (id_jenis_pakan) REFERENCES tb_jenis_pakan(id_jenis_pakan)
+);
+
+CREATE TABLE tb_log_pemasok_pakan (
+  id_log_pemasok_pakan INT PRIMARY KEY AUTO_INCREMENT,
+  id_pemasok_pakan INT,
+  nama_pemasok_pakan VARCHAR(64),
+  tanggal_penambahan DATE,
 );
 
 -- create table tb_ras_sapi_wagyu
@@ -74,7 +81,7 @@ CREATE TABLE tb_sapi_wagyu (
   riwayat_kesehatan_sapi VARCHAR(255),
   data_genetik_sapi VARCHAR(255),
   jenis_kelamin ENUM('jantan', 'betina'),
-  FOREIGN KEY id_ras_sapi REFERENCES tb_ras_sapi_wagyu(id_ras_sapi)
+  FOREIGN KEY (id_ras_sapi) REFERENCES tb_ras_sapi_wagyu(id_ras_sapi)
 );
 
 -- create table tb_produk_daging
@@ -82,23 +89,23 @@ CREATE TABLE tb_produk_daging (
   id_produk_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_sapi_wagyu INT,
   nama_produk VARCHAR(64),
-  grade_produk INT (10),
+  grade_produk INT(10),
   marbling_daging VARCHAR(64),
   warna_daging VARCHAR(64),
   tekstur_daging VARCHAR(64),
   harga_per_kg DECIMAL(10, 2),
-  FOREIGN KEY id_sapi_wagyu REFERENCES tb_sapi_wagyu(id_sapi_wagyu)
+  FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu(id_sapi_wagyu)
 );
 
 -- create table tb_detail_transaksi_daging
 CREATE TABLE tb_detail_transaksi_daging (
   id_detail_transaksi_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  id_transaksi INT,
+  id_transaksi_daging INT,
   id_produk_daging INT,
   id_pemasok_pakan INT,
   jumlah_daging_terjual DECIMAL(10, 2),
   total_harga_pesan DECIMAL(10, 2),
-  FOREIGN KEY id_transaksi REFERENCES tb_transaksi(id_transaksi),
-  FOREIGN KEY id_produk_daging REFERENCES tb_produk_daging(id_produk_daging),
-  FOREIGN KEY id_pemasok_pakan REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
+  FOREIGN KEY (id_transaksi_daging) REFERENCES tb_transaksi_daging(id_transaksi_daging),
+  FOREIGN KEY (id_produk_daging) REFERENCES tb_produk_daging(id_produk_daging),
+  FOREIGN KEY (id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
 );
