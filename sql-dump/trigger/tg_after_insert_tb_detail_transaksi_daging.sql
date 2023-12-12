@@ -1,8 +1,7 @@
-DELIMITER $ $;
+DELIMITER $$;
 
-CREATE TRIGGER after_insert_tb_detail_transaksi_daging
-AFTER
-INSERT
+CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_insert_tb_detail_transaksi_daging
+AFTER INSERT
   ON tb_detail_transaksi_daging FOR EACH ROW BEGIN
 UPDATE
   tb_produk_daging
@@ -13,4 +12,4 @@ WHERE
 
 END;
 
-$ $ DELIMITER;
+$$ DELIMITER;

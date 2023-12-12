@@ -1,6 +1,6 @@
 DELIMITER $ $;
 
-CREATE TRIGGER after_update_tb_sapi_wagyu
+CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_update_tb_sapi_wagyu
 AFTER
 UPDATE
   ON tb_sapi_wagyu FOR EACH ROW BEGIN

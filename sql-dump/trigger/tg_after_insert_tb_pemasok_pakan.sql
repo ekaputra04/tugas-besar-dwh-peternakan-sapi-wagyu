@@ -1,6 +1,6 @@
-DELIMITER $ $;
+DELIMITER $$;
 
-CREATE TRIGGER after_insert_tb_pemasok_pakan
+CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_insert_tb_pemasok_pakan
 AFTER
 INSERT
   ON tb_pemasok_pakan FOR EACH ROW BEGIN
@@ -19,4 +19,4 @@ VALUES
 
 END;
 
-$ $ DELIMITER;
+$$ DELIMITER;

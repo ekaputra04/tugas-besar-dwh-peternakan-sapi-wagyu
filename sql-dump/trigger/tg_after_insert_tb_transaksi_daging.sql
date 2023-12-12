@@ -1,6 +1,6 @@
 DELIMITER $ $;
 
-CREATE TRIGGER after_insert_tb_transaksi_daging
+CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_insert_tb_transaksi_daging
 AFTER
 INSERT
   ON tb_transaksi_daging FOR EACH ROW BEGIN -- Mengurangkan jumlah stok daging

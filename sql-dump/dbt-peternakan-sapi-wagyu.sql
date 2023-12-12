@@ -1,5 +1,5 @@
 -- create database db_peternakan_sapi_wagyu
-CREATE DATABASE db_peternakan_sapi_wagyu;
+CREATE DATABASE dbt_peternakan_sapi_wagyu;
 
 -- create table pelanggan
 CREATE TABLE tb_pelanggan (
@@ -22,8 +22,24 @@ CREATE TABLE tb_pegawai (
 -- create table tb_wilayah_penjualan
 CREATE TABLE tb_wilayah_penjualan (
   id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten int,
   nama_wilayah VARCHAR(64),
-  kode_pos VARCHAR(10)
+  kode_pos VARCHAR(10),
+  FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
+);
+
+-- create table tb_wilayah_kabupaten
+CREATE TABLE tb_kabupaten (
+  id_kabupaten INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_provinsi INT,
+  nama_kabupaten VARCHAR(64),
+  FOREIGN KEY (id_provinsi) REFERENCES tb_provinsi (id_provinsi)
+);
+
+-- create table tb_provinsi
+CREATE TABLE tb_provinsi (
+  id_provinsi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nama_provinsi VARCHAR(64),
 );
 
 -- create table transaksi_daging
@@ -62,8 +78,17 @@ CREATE TABLE tb_log_pemasok_pakan (
   id_log_pemasok_pakan INT PRIMARY KEY AUTO_INCREMENT,
   id_pemasok_pakan INT,
   nama_pemasok_pakan VARCHAR(64),
-  tanggal_penambahan DATE,
+  tanggal_penambahan DATE
 );
+
+CREATE TABLE tb_log_perubahan_umur (
+  id_Log_perubahan_umur INT PRIMARY KEY AUTO_INCREMENT,
+    id_sapi_wagyu INT,
+    umur_sebelum INT,
+    umur_sesudah INT,
+    tanggal_perubahan DATE,
+    FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu (id_sapi_wagyu)
+  );
 
 -- create table tb_ras_sapi_wagyu
 CREATE TABLE tb_ras_sapi_wagyu (
@@ -103,7 +128,7 @@ CREATE TABLE tb_detail_transaksi_daging (
   id_transaksi_daging INT,
   id_produk_daging INT,
   id_pemasok_pakan INT,
-  jumlah_daging_terjual DECIMAL(10, 2),
+  jumlah_produk_terjual DECIMAL(10, 2),
   total_harga_pesan DECIMAL(10, 2),
   FOREIGN KEY (id_transaksi_daging) REFERENCES tb_transaksi_daging(id_transaksi_daging),
   FOREIGN KEY (id_produk_daging) REFERENCES tb_produk_daging(id_produk_daging),
