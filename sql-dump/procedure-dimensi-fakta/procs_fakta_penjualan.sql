@@ -19,7 +19,6 @@ FROM
   tb_transaksi_daging td
   JOIN tb_detail_transaksi_daging tp ON td.id_transaksi_daging = tp.id_transaksi_daging;
 
--- Gantilah dengan nama tabel yang sesuai
 -- Memasukkan data baru ke dalam fakta penjualan
 INSERT INTO
   fakta_penjualan (

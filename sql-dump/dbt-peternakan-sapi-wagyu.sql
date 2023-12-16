@@ -1,6 +1,8 @@
 -- create database db_peternakan_sapi_wagyu
 CREATE DATABASE dbt_peternakan_sapi_wagyu;
 
+USE dbt_peternakan_sapi_wagyu;
+
 -- create table pelanggan
 CREATE TABLE tb_pelanggan (
   id_pelanggan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -83,12 +85,12 @@ CREATE TABLE tb_log_pemasok_pakan (
 
 CREATE TABLE tb_log_perubahan_umur (
   id_Log_perubahan_umur INT PRIMARY KEY AUTO_INCREMENT,
-    id_sapi_wagyu INT,
-    umur_sebelum INT,
-    umur_sesudah INT,
-    tanggal_perubahan DATE,
-    FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu (id_sapi_wagyu)
-  );
+  id_sapi_wagyu INT,
+  umur_sebelum INT,
+  umur_sesudah INT,
+  tanggal_perubahan DATE,
+  FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu (id_sapi_wagyu)
+);
 
 -- create table tb_ras_sapi_wagyu
 CREATE TABLE tb_ras_sapi_wagyu (
@@ -119,6 +121,7 @@ CREATE TABLE tb_produk_daging (
   warna_daging VARCHAR(64),
   tekstur_daging VARCHAR(64),
   harga_per_kg DECIMAL(10, 2),
+  stok_daging INT,
   FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu(id_sapi_wagyu)
 );
 

@@ -1,20 +1,6 @@
-DELIMITER $ $;
-
-CREATE PROCEDURE dwh_penyewaan_sapi_wagyu.procs_dimensi_jenis_pakan() BEGIN -- Membuat tabel staging untuk data jenis pakan
-CREATE TEMPORARY TABLE stg_jenis_pakan
-SELECT
-  id_jenis_pakan,
-  nama_jenis_pakan,
-  kualitas_pakan,
-  harga_pakan,
-  'Y' AS current_flag
-FROM
-  tb_jenis_pakan;
-
--- Memasukkan data baru ke dalam dimensi jenis pakan
+DELIMITER $ $ CREATE PROCEDURE procs_dimensi_jenis_pakan() BEGIN -- Memasukkan data baru (kode baru) ke dalam tabel dimensional
 INSERT INTO
   dimensi_jenis_pakan (
-    row_key_jenis_pakan,
     id_jenis_pakan,
     nama_jenis_pakan,
     kualitas_pakan,
@@ -24,29 +10,75 @@ INSERT INTO
     current_flag
   )
 SELECT
-  MD5(CONCAT(id_jenis_pakan, '-', nama_jenis_pakan)) AS row_key_jenis_pakan,
   id_jenis_pakan,
   nama_jenis_pakan,
   kualitas_pakan,
   harga_pakan,
-  CURDATE() AS valid_awal,
-  '9999-12-31' AS valid_akhir,
-  current_flag
+  CURDATE(),
+  '9999-12-31',
+  'Y'
 FROM
-  stg_jenis_pakan;
+  tb_jenis_pakan AS src
+  LEFT JOIN dimensi_jenis_pakan AS dim ON src.id_jenis_pakan = dim.id_jenis_pakan
+  AND dim.current_flag = 'Y'
+WHERE
+  dim.id_jenis_pakan IS NULL;
 
--- Mengupdate data yang sudah ada di dimensi jenis pakan
+-- Membuat tabel temp untuk mencatat data yang mengalami perubahan
+CREATE TEMPORARY TABLE temp_jenis_pakan
+SELECT
+  dim.row_key_jenis_pakan,
+  dim.id_jenis_pakan
+FROM
+  dimensi_jenis_pakan AS dim
+  JOIN tb_jenis_pakan AS src ON dim.id_jenis_pakan = src.id_jenis_pakan
+WHERE
+  IFNULL(dim.nama_jenis_pakan, '') <> IFNULL(src.nama_jenis_pakan, '')
+  OR IFNULL(dim.kualitas_pakan, 0) <> IFNULL(src.kualitas_pakan, 0)
+  OR IFNULL(dim.harga_pakan, 0.00) <> IFNULL(src.harga_pakan, 0.00);
+
+-- Memperbaharui tabel dimensi yang berubah (di-update pada db)
 UPDATE
-  dimensi_jenis_pakan AS djp
-  JOIN stg_jenis_pakan AS stg ON djp.id_jenis_pakan = stg.id_jenis_pakan
-  AND djp.current_flag = 'Y'
+  dimensi_jenis_pakan AS dim,
+  temp_jenis_pakan
 SET
-  djp.current_flag = 'N',
-  djp.valid_akhir = CURDATE();
+  dim.current_flag = 'N',
+  dim.valid_akhir = CURDATE()
+WHERE
+  dim.row_key_jenis_pakan = temp_jenis_pakan.row_key_jenis_pakan
+  AND dim.current_flag = 'Y';
 
--- Membersihkan tabel staging
-DROP TEMPORARY TABLE IF EXISTS stg_jenis_pakan;
+-- Insert data yang berubah ke dalam tabel_dimensi (buat baris baru)
+INSERT INTO
+  dimensi_jenis_pakan (
+    id_jenis_pakan,
+    nama_jenis_pakan,
+    kualitas_pakan,
+    harga_pakan,
+    valid_awal,
+    valid_akhir,
+    current_flag
+  )
+SELECT
+  src.id_jenis_pakan,
+  src.nama_jenis_pakan,
+  src.kualitas_pakan,
+  src.harga_pakan,
+  dim.valid_akhir,
+  '9999-12-31',
+  'Y'
+FROM
+  dimensi_jenis_pakan AS dim
+  JOIN tb_jenis_pakan AS src ON dim.id_jenis_pakan = src.id_jenis_pakan
+WHERE
+  src.id_jenis_pakan IN (
+    SELECT
+      DISTINCT id_jenis_pakan
+    FROM
+      temp_jenis_pakan
+  );
 
-END;
+-- Drop tabel temp
+DROP TABLE IF EXISTS temp_jenis_pakan;
 
-$ $ DELIMITER;
+END $ $ DELIMITER;

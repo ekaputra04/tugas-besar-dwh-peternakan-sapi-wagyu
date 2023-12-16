@@ -1,12 +1,6 @@
-DELIMITER $ $ CREATE
-/*[DEFINER = { user | CURRENT_USER }]*/
-PROCEDURE dwh_penyewaan_sapi_wagyu.procs_dimensi_waktu_pertgl(IN tgl_awal DATE, IN tgl_akhir DATE)
-/*LANGUAGE SQL
- | [NOT] DETERMINISTIC
- | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
- | SQL SECURITY { DEFINER | INVOKER }
- | COMMENT 'string'*/
-BEGIN
+DELIMITER $ $;
+
+CREATE PROCEDURE dwh_penyewaan_sapi_wagyu.procs_dimensi_waktu_pertgl(IN tgl_awal DATE, IN tgl_akhir DATE) BEGIN
 SET
 	@counterLoop := 1;
 
@@ -116,4 +110,6 @@ UPDATE
 -- drop tabel temp
 DROP TABLE IF EXISTS temp_waktu;
 
-END $ $ DELIMITER;
+END;
+
+$ $ DELIMITER;

@@ -13,7 +13,6 @@ SELECT
 FROM
   tb_pemasok_pakan;
 
--- Gantilah dengan nama tabel pemasok pakan yang sesuai
 -- Memasukkan data baru ke dalam dimensi pemasok pakan
 INSERT INTO
   dimensi_pemasok_pakan (
