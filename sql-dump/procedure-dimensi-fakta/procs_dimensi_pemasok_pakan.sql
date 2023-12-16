@@ -1,61 +1,94 @@
-DELIMITER $ $;
+-- procedur untuk dimensi_pemasok_pakan
+USE dwh_peternakan_sapi_wagyu;
 
-CREATE PROCEDURE dwh_penyewaan_sapi_wagyu.procs_dimensi_pemasok_pakan() BEGIN -- Membuat tabel staging untuk data pemasok pakan
-CREATE TEMPORARY TABLE stg_pemasok_pakan
-SELECT
-  id_pemasok_pakan,
-  id_jenis_pakan,
-  nama_pemasok_pakan,
-  alamat_pemasok_pakan,
-  no_telepon_pemasok_pakan,
-  email_pemasok_pakan,
-  'Y' AS current_flag
-FROM
-  tb_pemasok_pakan;
-
--- Gantilah dengan nama tabel pemasok pakan yang sesuai
--- Memasukkan data baru ke dalam dimensi pemasok pakan
+-- procedure pada dimensi jenis pakan
+DELIMITER / / CREATE PROCEDURE procs_dimensi_pemasok_pakan() BEGIN -- Memasukkan data baru (kode baru) ke dalam tabel dimensional
 INSERT INTO
-  dimensi_pemasok_pakan (
-    row_key_pemasok_pakan,
-    id_pemasok_pakan,
-    id_jenis_pakan,
-    nama_pemasok_pakan,
-    alamat_pemasok_pakan,
-    no_telepon_pemasok_pakan,
-    email_pemasok_pakan,
-    valid_awal,
-    valid_akhir,
-    current_flag
-  )
+    dimensi_pemasok_pakan (
+        id_pemasok_pakan,
+        nama_pemasok_pakan,
+        alamat_pemasok_pakan,
+        no_telepon_pemasok_pakan,
+        email_pemasok_pakan,
+        valid_awal,
+        valid_akhir,
+        current_flag
+    )
 SELECT
-  MD5(
-    CONCAT(id_pemasok_pakan, '-', nama_pemasok_pakan)
-  ) AS row_key_pemasok_pakan,
-  id_pemasok_pakan,
-  id_jenis_pakan,
-  nama_pemasok_pakan,
-  alamat_pemasok_pakan,
-  no_telepon_pemasok_pakan,
-  email_pemasok_pakan,
-  CURDATE() AS valid_awal,
-  '9999-12-31' AS valid_akhir,
-  current_flag
+    src.id_pemasok_pakan,
+    src.nama_pemasok_pakan,
+    src.alamat_pemasok_pakan,
+    src.no_telepon_pemasok_pakan,
+    src.email_pemasok_pakan,
+    CURDATE(),
+    '9999-12-31',
+    'Y'
 FROM
-  stg_pemasok_pakan;
+    dbt_peternakan_sapi_wagyu.tb_pemasok_pakan AS src
+    LEFT JOIN dwh_peternakan_sapi_wagyu.dimensi_pemasok_pakan AS dim ON src.id_pemasok_pakan = dim.id_pemasok_pakan
+    AND dim.current_flag = 'Y'
+WHERE
+    dim.id_pemasok_pakan IS NULL;
 
--- Mengupdate data yang sudah ada di dimensi pemasok pakan
+-- Membuat tabel temp untuk mencatat data yang mengalami perubahan
+CREATE TEMPORARY TABLE temp_pemasok_pakan
+SELECT
+    dim.row_key_pemasok_pakan,
+    dim.id_pemasok_pakan
+FROM
+    dwh_peternakan_sapi_wagyu.dimensi_pemasok_pakan AS dim
+    JOIN dbt_peternakan_sapi_wagyu.tb_pemasok_pakan AS src ON dim.id_pemasok_pakan = src.id_pemasok_pakan
+WHERE
+    IFNULL(dim.id_pemasok_pakan, 0) <> IFNULL(src.id_pemasok_pakan, 0)
+    OR IFNULL(dim.nama_pemasok_pakan, '') <> IFNULL(src.nama_pemasok_pakan, '')
+    OR IFNULL(dim.alamat_pemasok_pakan, '') <> IFNULL(src.alamat_pemasok_pakan, '')
+    OR IFNULL(dim.no_telepon_pemasok_pakan, '') <> IFNULL(src.no_telepon_pemasok_pakan, '')
+    OR IFNULL(dim.email_pemasok_pakan, '') <> IFNULL(src.email_pemasok_pakan, '');
+
+-- Memperbaharui tabel dimensi yang berubah (di-update pada db)
 UPDATE
-  dimensi_pemasok_pakan AS dpp
-  JOIN stg_pemasok_pakan AS stg ON dpp.id_pemasok_pakan = stg.id_pemasok_pakan
-  AND dpp.current_flag = 'Y'
+    dwh_peternakan_sapi_wagyu.dimensi_pemasok_pakan AS dim,
+    temp_pemasok_pakan
 SET
-  dpp.current_flag = 'N',
-  dpp.valid_akhir = CURDATE();
+    dim.current_flag = 'N',
+    dim.valid_akhir = CURDATE()
+WHERE
+    dim.row_key_pemasok_pakan = temp_pemasok_pakan.row_key_pemasok_pakan
+    AND dim.current_flag = 'Y';
 
--- Membersihkan tabel staging
-DROP TEMPORARY TABLE IF EXISTS stg_pemasok_pakan;
+-- Insert data yang berubah ke dalam tabel_dimensi (buat baris baru)
+INSERT INTO
+    dimensi_pemasok_pakan (
+        id_pemasok_pakan,
+        nama_pemasok_pakan,
+        alamat_pemasok_pakan,
+        no_telepon_pemasok_pakan,
+        email_pemasok_pakan,
+        valid_awal,
+        valid_akhir,
+        current_flag
+    )
+SELECT
+    src.id_pemasok_pakan,
+    src.nama_pemasok_pakan,
+    src.alamat_pemasok_pakan,
+    src.no_telepon_pemasok_pakan,
+    src.email_pemasok_pakan,
+    CURDATE(),
+    '9999-12-31',
+    'Y'
+FROM
+    dwh_peternakan_sapi_wagyu.dimensi_pemasok_pakan AS dim
+    JOIN dbt_peternakan_sapi_wagyu.tb_pemasok_pakan AS src ON dim.id_pemasok_pakan = src.id_pemasok_pakan
+WHERE
+    src.id_pemasok_pakan IN (
+        SELECT
+            DISTINCT id_pemasok_pakan
+        FROM
+            temp_pemasok_pakan
+    );
 
-END $ $;
+-- Drop tabel temp
+DROP TABLE IF EXISTS temp_pemasok_pakan;
 
-DELIMITER;
+END / / DELIMITER;

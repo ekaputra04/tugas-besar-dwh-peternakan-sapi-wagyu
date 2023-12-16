@@ -1,9 +1,8 @@
-DELIMITER $$;
-
-CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_insert_tb_pemasok_pakan
+-- after insert pemasok_pakan
+DELIMITER / / CREATE TRIGGER dbt_peternakan_sapi_wagyu.after_insert_tb_pemasok_pakan
 AFTER
 INSERT
-  ON tb_pemasok_pakan FOR EACH ROW BEGIN
+  ON dbt_peternakan_sapi_wagyu.tb_pemasok_pakan FOR EACH ROW BEGIN
 INSERT INTO
   tb_log_pemasok_pakan (
     id_pemasok_pakan,
@@ -17,6 +16,4 @@ VALUES
     NOW()
   );
 
-END;
-
-$$ DELIMITER;
+END / / DELIMITER;
