@@ -144,6 +144,7 @@ CREATE TABLE dimensi_pemasok_pakan (
 CREATE TABLE dimensi_produk (
   row_key_produk INT AUTO_INCREMENT NOT NULL,
   id_produk_daging INT,
+  id_sapi INT,
   nama_produk VARCHAR(64),
   grade_produk INT(10),
   harga_produk DECIMAL(10, 2),
@@ -152,7 +153,7 @@ CREATE TABLE dimensi_produk (
   valid_akhir DATE,
   current_flag ENUM('Y', 'N'),
   PRIMARY KEY(row_key_produk),
-  UNIQUE(row_key_produk, id_produk_daging)
+  UNIQUE(row_key_produk, id_produk_daging, id_sapi)
 );
 
 CREATE TABLE dimensi_pakan (

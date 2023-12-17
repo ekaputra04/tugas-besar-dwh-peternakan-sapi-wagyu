@@ -1,6 +1,7 @@
 DELIMITER $ $ CREATE PROCEDURE dwh_peternakan_sapi_wagyu.procs_dimensi_pemasok_pakan() BEGIN DROP TABLE IF EXISTS stg_pemasok_pakan;
 
--- membuat tabel staging
+DROP TABLE IF EXISTS stg_pemasok_pakan;
+
 CREATE TEMPORARY TABLE stg_pemasok_pakan
 SELECT
     pg.id_pemasok_pakan AS id_pemasok_pakan,
