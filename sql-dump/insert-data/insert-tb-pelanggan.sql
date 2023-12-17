@@ -23,7 +23,7 @@ VALUES
     'Citra',
     'Jl. Raya Cijantung No. 67',
     '083456789012',
-    andi 'citra@email.com'
+    'citra@email.com'
   ),
   (
     'Diana',

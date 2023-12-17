@@ -6,375 +6,177 @@ INSERT INTO
     marbling_daging,
     warna_daging,
     tekstur_daging,
-    harga_per_kg
+    harga_per_kg,
+    stok_daging
   )
 VALUES
   (
-    15,
-    'Wagyu Steak',
+    1,
+    'Wagyu Ribeye',
     5,
     'High',
     'Merah',
     'Halus',
-    1500.00
-  ),
-  (
-    22,
-    'Wagyu Burger',
-    4,
-    'Medium',
-    'Pink',
-    'Padat',
-    1200.50
-  ),
-  (
-    7,
-    'Wagyu Sausage',
-    3,
-    'Low',
-    'Putih',
-    'Kasar',
-    800.75
-  ),
-  (
-    35,
-    'Wagyu Rendang',
-    5,
-    'High',
-    'Coklat',
-    'Lembut',
-    1800.00
-  ),
-  (
-    18,
-    'Wagyu Jerky',
-    4,
-    'Medium',
-    'Coklat',
-    'Keras',
-    1600.80
-  ),
-  (
-    12,
-    'Wagyu Yakiniku',
-    4,
-    'Medium',
-    'Merah',
-    'Lembut',
-    1400.60
-  ),
-  (
-    28,
-    'Wagyu Hot Pot',
-    5,
-    'High',
-    'Pink',
-    'Lembut',
-    2000.40
-  ),
-  (
-    5,
-    'Wagyu Katsu',
-    3,
-    'Low',
-    'Putih',
-    'Keras',
-    1000.30
-  ),
-  (
-    31,
-    'Wagyu Shabu-Shabu',
-    5,
-    'High',
-    'Merah',
-    'Halus',
-    1900.20
-  ),
-  (
-    10,
-    'Wagyu Grill',
-    4,
-    'Medium',
-    'Coklat',
-    'Padat',
-    1700.70
-  ),
-  (
-    25,
-    'Wagyu Sushi',
-    4,
-    'Medium',
-    'Pink',
-    'Halus',
-    1600.50
+    200000,
+    50
   ),
   (
     2,
-    'Wagyu Steak Bowl',
-    5,
-    'High',
-    'Coklat',
-    'Lembut',
-    1800.40
-  ),
-  (
-    38,
-    'Wagyu Tacos',
-    3,
-    'Low',
-    'Merah',
-    'Padat',
-    900.60
-  ),
-  (
-    20,
-    'Wagyu Pizza',
+    'Wagyu Sirloin',
     4,
     'Medium',
-    'Putih',
-    'Kasaran',
-    1300.80
-  ),
-  (
-    14,
-    'Wagyu Noodle Soup',
-    4,
-    'Medium',
-    'Coklat',
-    'Lembut',
-    1500.30
-  ),
-  (
-    32,
-    'Wagyu Sashimi',
-    5,
-    'High',
-    'Pink',
+    'Merah Muda',
     'Halus',
-    2000.20
-  ),
-  (
-    8,
-    'Wagyu Bolognese',
-    3,
-    'Low',
-    'Merah',
-    'Padat',
-    1000.10
-  ),
-  (
-    26,
-    'Wagyu Tandoori',
-    4,
-    'Medium',
-    'Coklat',
-    'Keras',
-    1700.90
-  ),
-  (
-    19,
-    'Wagyu Fried Rice',
-    4,
-    'Medium',
-    'Putih',
-    'Padat',
-    1400.40
+    180000,
+    40
   ),
   (
     3,
-    'Wagyu Teriyaki',
+    'Wagyu Tenderloin',
     5,
     'High',
-    'Coklat',
-    'Lembut',
-    1900.70
-  ),
-  (
-    36,
-    'Wagyu Dumplings',
-    3,
-    'Low',
-    'Pink',
+    'Merah',
     'Halus',
-    900.30
+    220000,
+    30
   ),
   (
-    13,
-    'Wagyu Burrito',
+    4,
+    'Wagyu Striploin',
     4,
     'Medium',
-    'Merah',
-    'Kasaran',
-    1600.50
+    'Merah Muda',
+    'Halus',
+    190000,
+    45
   ),
   (
-    29,
-    'Wagyu Ramen',
     5,
-    'High',
-    'Coklat',
-    'Lembut',
-    2000.80
+    'Wagyu Brisket',
+    3,
+    'Low',
+    'Merah Tua',
+    'Berlemak',
+    150000,
+    60
+  ),
+  (
+    3,
+    'Wagyu Chuck',
+    3,
+    'Low',
+    'Merah Tua',
+    'Berlemak',
+    160000,
+    55
   ),
   (
     6,
-    'Wagyu T-bone',
-    4,
-    'Medium',
-    'Pink',
-    'Lembut',
-    1700.60
-  ),
-  (
-    24,
-    'Wagyu Lasagna',
+    'Wagyu Chuck',
     3,
     'Low',
-    'Coklat',
-    'Padat',
-    1000.20
+    'Merah Tua',
+    'Berlemak',
+    160000,
+    55
   ),
   (
-    17,
-    'Wagyu Gyudon',
-    5,
-    'High',
-    'Merah',
+    7,
+    'Wagyu Top Round',
+    4,
+    'Medium',
+    'Merah Muda',
     'Halus',
-    1800.40
+    175000,
+    48
   ),
   (
-    39,
-    'Wagyu Spring Rolls',
+    2,
+    'Wagyu Bottom Round',
     3,
     'Low',
-    'Putih',
-    'Kasaran',
-    800.50
+    'Merah Tua',
+    'Berlemak',
+    155000,
+    60
   ),
   (
-    11,
-    'Wagyu Carbonara',
+    4,
+    'Wagyu Short Plate',
     4,
     'Medium',
-    'Coklat',
-    'Halus',
-    1500.70
-  ),
-  (
-    33,
-    'Wagyu Kebab',
-    5,
-    'High',
-    'Merah',
-    'Kasaran',
-    1900.90
-  ),
-  (
-    16,
-    'Wagyu Hot Dog',
-    4,
-    'Medium',
-    'Putih',
-    'Padat',
-    1300.30
-  ),
-  (
-    40,
-    'Wagyu Sate',
-    3,
-    'Low',
-    'Coklat',
-    'Keras',
-    900.40
+    'Merah Muda',
+    'Berlemak',
+    185000,
+    42
   ),
   (
     9,
-    'Wagyu Curry',
-    4,
-    'Medium',
-    'Pink',
-    'Lembut',
-    1600.20
-  ),
-  (
-    21,
-    'Wagyu Sandwich',
-    5,
-    'High',
-    'Merah',
-    'Halus',
-    2000.60
-  ),
-  (
-    4,
-    'Wagyu Pasta',
+    'Wagyu Flank',
     3,
     'Low',
-    'Coklat',
-    'Padat',
-    1100.80
-  ),
-  (
-    30,
-    'Wagyu Stir-fry',
-    4,
-    'Medium',
-    'Pink',
-    'Lembut',
-    1700.50
-  ),
-  (
-    15,
-    'Wagyu Bbq Ribs',
-    5,
-    'High',
-    'Coklat',
-    'Padat',
-    1800.30
-  ),
-  (
-    37,
-    'Wagyu Risotto',
-    3,
-    'Low',
-    'Putih',
-    'Halus',
-    800.70
-  ),
-  (
-    23,
-    'Wagyu Enchiladas',
-    4,
-    'Medium',
-    'Merah',
-    'Kasaran',
-    1500.90
+    'Merah Tua',
+    'Berlemak',
+    170000,
+    50
   ),
   (
     1,
-    'Wagyu Paella',
-    5,
-    'High',
-    'Coklat',
-    'Lembut',
-    2000.20
-  ),
-  (
-    34,
-    'Wagyu Goulash',
-    3,
-    'Low',
-    'Pink',
-    'Kasaran',
-    900.40
-  ),
-  (
-    10,
-    'Wagyu Tiramisu',
+    'Wagyu Hanger Steak',
     4,
     'Medium',
-    'Coklat',
+    'Merah Muda',
     'Halus',
-    1600.60
+    190000,
+    38
+  ),
+  (
+    3,
+    'Wagyu Skirt Steak',
+    3,
+    'Low',
+    'Merah Tua',
+    'Berlemak',
+    175000,
+    47
+  ),
+  (
+    5,
+    'Wagyu Bavette',
+    4,
+    'Medium',
+    'Merah Muda',
+    'Berlemak',
+    200000,
+    36
+  ),
+  (
+    8,
+    'Wagyu Tri-Tip',
+    3,
+    'Low',
+    'Merah Tua',
+    'Halus',
+    180000,
+    44
+  ),
+  (
+    9,
+    'Wagyu Coulotte',
+    4,
+    'Medium',
+    'Merah Muda',
+    'Berlemak',
+    195000,
+    39
+  ),
+  (
+    2,
+    'Wagyu Picanha',
+    5,
+    'High',
+    'Merah',
+    'Halus',
+    210000,
+    32
   );

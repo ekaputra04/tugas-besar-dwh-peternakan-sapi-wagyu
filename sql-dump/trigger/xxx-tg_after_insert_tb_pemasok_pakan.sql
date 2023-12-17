@@ -6,14 +6,9 @@ INSERT
 INSERT INTO
   tb_log_pemasok_pakan (
     id_pemasok_pakan,
-    nama_pemasok_pakan,
     tanggal_penambahan
   )
 VALUES
-  (
-    NEW.id_pemasok_pakan,
-    NEW.nama_pemasok_pakan,
-    NOW()
-  );
+  (NEW.id_pemasok_pakan, NOW());
 
 END / / DELIMITER;

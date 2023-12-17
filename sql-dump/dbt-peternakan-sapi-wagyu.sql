@@ -21,16 +21,22 @@ CREATE TABLE tb_pegawai (
   email_pegawai VARCHAR(64)
 );
 
--- create table tb_wilayah_penjualan
-CREATE TABLE tb_wilayah_penjualan (
-  id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  id_kabupaten int,
-  nama_wilayah VARCHAR(64),
-  kode_pos VARCHAR(10),
-  FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
+-- create table tb_pemasok_makanan
+CREATE TABLE tb_pemasok_pakan (
+  id_pemasok_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nama_pemasok_pakan VARCHAR(64),
+  alamat_pemasok_pakan VARCHAR(64),
+  no_telepon_pemasok_pakan VARCHAR(12),
+  email_pemasok_pakan VARCHAR(64)
 );
 
--- create table tb_wilayah_kabupaten
+-- create table tb_provinsi
+CREATE TABLE tb_provinsi (
+  id_provinsi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nama_provinsi VARCHAR(64)
+);
+
+-- create table tb_kabupaten
 CREATE TABLE tb_kabupaten (
   id_kabupaten INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_provinsi INT,
@@ -38,10 +44,13 @@ CREATE TABLE tb_kabupaten (
   FOREIGN KEY (id_provinsi) REFERENCES tb_provinsi (id_provinsi)
 );
 
--- create table tb_provinsi
-CREATE TABLE tb_provinsi (
-  id_provinsi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  nama_provinsi VARCHAR(64),
+-- create table tb_wilayah_penjualan
+CREATE TABLE tb_wilayah_penjualan (
+  id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten INT,
+  nama_wilayah VARCHAR(64),
+  kode_pos VARCHAR(10),
+  FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
 );
 
 -- create table transaksi_daging
@@ -60,36 +69,16 @@ CREATE TABLE tb_transaksi_daging (
 -- create table tb_jenis_pakan
 CREATE TABLE tb_jenis_pakan (
   id_jenis_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  nama_jenis_pakan VARCHAR(64),
-  kualitas_pakan INT(10),
-  harga_pakan DECIMAL(10, 2)
+  nama_jenis_pakan VARCHAR(64)
 );
 
--- create table tb_pemasok_makanan
-CREATE TABLE tb_pemasok_pakan (
-  id_pemasok_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE tb_pakan(
+  id_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_jenis_pakan INT,
-  nama_pemasok_pakan VARCHAR(64),
-  alamat_pemasok_pakan VARCHAR(64),
-  no_telepon_pemasok_pakan VARCHAR(12),
-  email_pemasok_pakan VARCHAR(64),
+  nama_pakan VARCHAR(64),
+  kualitas_pakan INT(10),
+  harga_pakan DECIMAL(10, 2),
   FOREIGN KEY (id_jenis_pakan) REFERENCES tb_jenis_pakan(id_jenis_pakan)
-);
-
-CREATE TABLE tb_log_pemasok_pakan (
-  id_log_pemasok_pakan INT PRIMARY KEY AUTO_INCREMENT,
-  id_pemasok_pakan INT,
-  nama_pemasok_pakan VARCHAR(64),
-  tanggal_penambahan DATE
-);
-
-CREATE TABLE tb_log_perubahan_umur (
-  id_Log_perubahan_umur INT PRIMARY KEY AUTO_INCREMENT,
-  id_sapi_wagyu INT,
-  umur_sebelum INT,
-  umur_sesudah INT,
-  tanggal_perubahan DATE,
-  FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu (id_sapi_wagyu)
 );
 
 -- create table tb_ras_sapi_wagyu
@@ -130,10 +119,95 @@ CREATE TABLE tb_detail_transaksi_daging (
   id_detail_transaksi_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_transaksi_daging INT,
   id_produk_daging INT,
-  id_pemasok_pakan INT,
   jumlah_produk_terjual DECIMAL(10, 2),
   total_harga_pesan DECIMAL(10, 2),
   FOREIGN KEY (id_transaksi_daging) REFERENCES tb_transaksi_daging(id_transaksi_daging),
-  FOREIGN KEY (id_produk_daging) REFERENCES tb_produk_daging(id_produk_daging),
+  FOREIGN KEY (id_produk_daging) REFERENCES tb_produk_daging(id_produk_daging)
+);
+
+-- ==============================================================================================
+-- LOG TABLE
+-- ==============================================================================================
+-- Log Pelanggan
+CREATE TABLE tb_log_alamat_pelanggan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pelanggan INT,
+  alamat_lama VARCHAR(64),
+  alamat_baru VARCHAR(64),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan)
+);
+
+CREATE TABLE tb_log_nomor_telepon_pelanggan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pelanggan INT,
+  nomor_telepon_lama VARCHAR(15),
+  nomor_telepon_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan)
+);
+
+CREATE TABLE tb_log_email_pelanggan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pelanggan INT,
+  email_lama VARCHAR(15),
+  email_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan)
+);
+
+-- Log Pegawai
+CREATE TABLE tb_log_alamat_pegawai(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pegawai INT,
+  alamat_lama VARCHAR(64),
+  alamat_baru VARCHAR(64),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+);
+
+CREATE TABLE tb_log_nomor_telepon_pegawai(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pegawai INT,
+  nomor_telepon_lama VARCHAR(15),
+  nomor_telepon_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+);
+
+CREATE TABLE tb_log_email_pegawai(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pegawai INT,
+  email_lama VARCHAR(15),
+  email_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+);
+
+-- Log Pemasok pakan
+CREATE TABLE tb_log_alamat_pemasok_pakan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pemasok_pakan INT,
+  alamat_lama VARCHAR(64),
+  alamat_baru VARCHAR(64),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
+);
+
+CREATE TABLE tb_log_nomor_telepon_pemasok_pakan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pemasok_pakan INT,
+  nomor_telepon_lama VARCHAR(15),
+  nomor_telepon_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
+  FOREIGN KEY (id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
+);
+
+CREATE TABLE tb_log_email_pemasok_pakan(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_pemasok_pakan INT,
+  email_lama VARCHAR(15),
+  email_baru VARCHAR(15),
+  tanggal_perubahan DATETIME,
   FOREIGN KEY (id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
 );
