@@ -5,8 +5,9 @@ CREATE TEMPORARY TABLE stg_pegawai
 SELECT
 	pg.id_pegawai AS id_pegawai,
 	func_capitalisasi(pg.nama_pegawai) AS nama_pegawai,
-	pg.nomor_telepon_pegawai AS nomor_telepon_pegawai,
 	pg.alamat_pegawai AS alamat_pegawai,
+	pg.nomor_telepon_pegawai AS nomor_telepon_pegawai,
+	pg.email_pegawai AS email_pegawai,
 	COALESCE(
 		CASE
 			WHEN k.nama_kabupaten LIKE 'd%p%s%r' THEN 'Denpasar'
