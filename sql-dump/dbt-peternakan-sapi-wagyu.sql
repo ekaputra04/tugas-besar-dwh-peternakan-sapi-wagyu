@@ -6,28 +6,34 @@ USE dbt_peternakan_sapi_wagyu;
 -- create table pelanggan
 CREATE TABLE tb_pelanggan (
   id_pelanggan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten INT,
   nama_pelanggan VARCHAR(64),
   alamat_pelanggan VARCHAR(64),
   nomor_telepon_pelanggan VARCHAR(12),
-  email_pelanggan VARCHAR(64)
+  email_pelanggan VARCHAR(64),
+  FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
 -- create table pegawai
 CREATE TABLE tb_pegawai (
   id_pegawai INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten INT,
   nama_pegawai VARCHAR(64),
   alamat_pegawai VARCHAR(64),
   nomor_telepon_pegawai VARCHAR(12),
-  email_pegawai VARCHAR(64)
+  email_pegawai VARCHAR(64),
+  FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
 -- create table tb_pemasok_makanan
 CREATE TABLE tb_pemasok_pakan (
   id_pemasok_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten INT,
   nama_pemasok_pakan VARCHAR(64),
   alamat_pemasok_pakan VARCHAR(64),
   no_telepon_pemasok_pakan VARCHAR(12),
-  email_pemasok_pakan VARCHAR(64)
+  email_pemasok_pakan VARCHAR(64),
+  FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
 -- create table tb_provinsi
@@ -53,19 +59,6 @@ CREATE TABLE tb_wilayah_penjualan (
   FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
 );
 
--- create table transaksi_daging
-CREATE TABLE tb_transaksi_daging (
-  id_transaksi_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  id_pelanggan INT,
-  id_pegawai INT,
-  id_wilayah_penjualan INT,
-  tanggal_transaksi DATETIME,
-  total_harga DECIMAL(10, 2),
-  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan),
-  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai),
-  FOREIGN KEY (id_wilayah_penjualan) REFERENCES tb_wilayah_penjualan(id_wilayah_penjualan)
-);
-
 -- create table tb_jenis_pakan
 CREATE TABLE tb_jenis_pakan (
   id_jenis_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -78,6 +71,7 @@ CREATE TABLE tb_pakan(
   nama_pakan VARCHAR(64),
   kualitas_pakan INT(10),
   harga_pakan DECIMAL(10, 2),
+  stok_pakan INT,
   FOREIGN KEY (id_jenis_pakan) REFERENCES tb_jenis_pakan(id_jenis_pakan)
 );
 
@@ -114,7 +108,18 @@ CREATE TABLE tb_produk_daging (
   FOREIGN KEY (id_sapi_wagyu) REFERENCES tb_sapi_wagyu(id_sapi_wagyu)
 );
 
--- create table tb_detail_transaksi_daging
+CREATE TABLE tb_transaksi_daging (
+  id_transaksi_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_pelanggan INT,
+  id_pegawai INT,
+  id_wilayah_penjualan INT,
+  tanggal_transaksi DATETIME,
+  total_harga DECIMAL(10, 2),
+  FOREIGN KEY (id_pelanggan) REFERENCES tb_pelanggan(id_pelanggan),
+  FOREIGN KEY (id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+  FOREIGN KEY (id_wilayah_penjualan) REFERENCES tb_wilayah_penjualan(id_wilayah_penjualan)
+);
+
 CREATE TABLE tb_detail_transaksi_daging (
   id_detail_transaksi_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_transaksi_daging INT,
@@ -123,6 +128,26 @@ CREATE TABLE tb_detail_transaksi_daging (
   total_harga_pesan DECIMAL(10, 2),
   FOREIGN KEY (id_transaksi_daging) REFERENCES tb_transaksi_daging(id_transaksi_daging),
   FOREIGN KEY (id_produk_daging) REFERENCES tb_produk_daging(id_produk_daging)
+);
+
+CREATE TABLE tb_pemasokan_pakan(
+  id_pasokan_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_pegawai INT,
+  id_pemasok_pakan INT,
+  tanggal_pasok DATETIME,
+  total_biaya_pasok double(10, 2),
+  FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+  FOREIGN KEY(id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
+);
+
+CREATE TABLE tb_detail_pemasokan_pakan (
+  id_detail_pasokan_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_pasokan_pakan INT,
+  id_pakan INT,
+  jumlah_pasokan_pakan INT,
+  total_harga_pakan DECIMAL(10, 2),
+  FOREIGN KEY (id_pasokan_pakan) REFERENCES tb_pasokan_pakan(id_pasokan_pakan),
+  FOREIGN KEY (id_pakan) REFERENCES tb_pakan(id_pakan)
 );
 
 -- ==============================================================================================

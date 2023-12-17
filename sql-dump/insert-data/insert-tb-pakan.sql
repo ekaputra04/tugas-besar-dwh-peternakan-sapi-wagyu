@@ -4,7 +4,8 @@ INSERT INTO
     id_jenis_pakan,
     nama_pakan,
     kualitas_pakan,
-    harga_pakan
+    harga_pakan,
+    stok_pakan
   )
 SELECT
   ROUND(RAND() * 9) + 1,
@@ -12,7 +13,8 @@ SELECT
   CONCAT('Pakan ', id_pakan),
   ROUND(RAND() * 5) + 5,
   -- Angka acak dari 5 sampai 10 untuk kualitas_pakan
-  ROUND(RAND() * (2000000 - 500000) + 500000, 2) -- Harga acak di antara 500,000 dan 2,000,000 untuk harga_pakan
+  ROUND(RAND() * (2000000 - 500000) + 500000, 2) -- Harga acak di antara 500,000 dan 2,000,000 untuk harga_pakan,
+  ROUND(RAND() * 5) + 15,
 FROM
   (
     SELECT
