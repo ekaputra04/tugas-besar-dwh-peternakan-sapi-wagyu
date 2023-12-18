@@ -3,7 +3,26 @@ CREATE DATABASE dbt_peternakan_sapi_wagyu;
 
 USE dbt_peternakan_sapi_wagyu;
 
--- create table pelanggan
+CREATE TABLE tb_provinsi (
+  id_provinsi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nama_provinsi VARCHAR(64)
+);
+
+CREATE TABLE tb_kabupaten (
+  id_kabupaten INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_provinsi INT,
+  nama_kabupaten VARCHAR(64),
+  FOREIGN KEY (id_provinsi) REFERENCES tb_provinsi (id_provinsi)
+);
+
+CREATE TABLE tb_wilayah_penjualan (
+  id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id_kabupaten INT,
+  nama_wilayah VARCHAR(64),
+  kode_pos VARCHAR(10),
+  FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
+);
+
 CREATE TABLE tb_pelanggan (
   id_pelanggan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_kabupaten INT,
@@ -14,7 +33,6 @@ CREATE TABLE tb_pelanggan (
   FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
--- create table pegawai
 CREATE TABLE tb_pegawai (
   id_pegawai INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_kabupaten INT,
@@ -25,7 +43,6 @@ CREATE TABLE tb_pegawai (
   FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
--- create table tb_pemasok_makanan
 CREATE TABLE tb_pemasok_pakan (
   id_pemasok_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_kabupaten INT,
@@ -36,30 +53,6 @@ CREATE TABLE tb_pemasok_pakan (
   FOREIGN KEY(id_kabupaten) REFERENCES tb_kabupaten(id_kabupaten)
 );
 
--- create table tb_provinsi
-CREATE TABLE tb_provinsi (
-  id_provinsi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  nama_provinsi VARCHAR(64)
-);
-
--- create table tb_kabupaten
-CREATE TABLE tb_kabupaten (
-  id_kabupaten INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  id_provinsi INT,
-  nama_kabupaten VARCHAR(64),
-  FOREIGN KEY (id_provinsi) REFERENCES tb_provinsi (id_provinsi)
-);
-
--- create table tb_wilayah_penjualan
-CREATE TABLE tb_wilayah_penjualan (
-  id_wilayah_penjualan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  id_kabupaten INT,
-  nama_wilayah VARCHAR(64),
-  kode_pos VARCHAR(10),
-  FOREIGN KEY (id_kabupaten) REFERENCES tb_kabupaten (id_kabupaten)
-);
-
--- create table tb_jenis_pakan
 CREATE TABLE tb_jenis_pakan (
   id_jenis_pakan INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   nama_jenis_pakan VARCHAR(64)
@@ -75,13 +68,11 @@ CREATE TABLE tb_pakan(
   FOREIGN KEY (id_jenis_pakan) REFERENCES tb_jenis_pakan(id_jenis_pakan)
 );
 
--- create table tb_ras_sapi_wagyu
 CREATE TABLE tb_ras_sapi_wagyu (
   id_ras_sapi INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   nama_ras_sapi VARCHAR(64)
 );
 
--- create table tb_sapi_wagyu
 CREATE TABLE tb_sapi_wagyu (
   id_sapi_wagyu INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_ras_sapi INT,
@@ -94,7 +85,6 @@ CREATE TABLE tb_sapi_wagyu (
   FOREIGN KEY (id_ras_sapi) REFERENCES tb_ras_sapi_wagyu(id_ras_sapi)
 );
 
--- create table tb_produk_daging
 CREATE TABLE tb_produk_daging (
   id_produk_daging INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   id_sapi_wagyu INT,

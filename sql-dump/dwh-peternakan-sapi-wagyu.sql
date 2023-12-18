@@ -77,8 +77,9 @@ CREATE TABLE dimensi_wilayah (
 
 CREATE TABLE dimensi_sapi (
   row_key_sapi INT AUTO_INCREMENT NOT NULL,
-  id_sapi INT,
-  nama_sapi VARCHAR(64),
+  id_sapi_wagyu INT,
+  nama_sapi_wagyu VARCHAR(64),
+  nama_ras_sapi VARCHAR(64),
   umur_sapi DECIMAL(10, 2),
   berat_sapi DECIMAL(10, 2),
   riwayat_kesehatan_sapi VARCHAR(255),
@@ -90,7 +91,7 @@ CREATE TABLE dimensi_sapi (
   valid_akhir DATE,
   current_flag ENUM('Y', 'N'),
   PRIMARY KEY(row_key_sapi),
-  UNIQUE(row_key_sapi, id_sapi)
+  UNIQUE(row_key_sapi, id_sapi_wagyu)
 );
 
 CREATE TABLE dimensi_pegawai (
@@ -178,7 +179,7 @@ CREATE TABLE fakta_pemasokan_pakan(
   row_key_pegawai INT NOT NULL,
   row_key_pakan INT NOT NULL,
   total_pakan BIGINT,
-  total_biaya_pemasokan BIGINT,
+  total_biaya_pemasokan DECIMAL(10, 2),
   FOREIGN KEY(row_key_waktu) REFERENCES dimensi_waktu(row_key_waktu),
   FOREIGN KEY(row_key_kabupaten) REFERENCES dimensi_kabupaten(row_key_kabupaten),
   FOREIGN KEY(row_key_provinsi) REFERENCES dimensi_provinsi(row_key_provinsi),
@@ -202,7 +203,8 @@ CREATE TABLE fakta_penjualan_produk_daging(
   row_key_pelanggan INT NOT NULL,
   row_key_pegawai INT NOT NULL,
   row_key_produk INT NOT NULL,
-  total_penjualan_produk_ BIGINT,
+  total_produk INT NOT NULL,
+  total_penjualan_produk DECIMAL(10, 2),
   FOREIGN KEY(row_key_waktu) REFERENCES dimensi_waktu(row_key_waktu),
   FOREIGN KEY(row_key_kabupaten) REFERENCES dimensi_kabupaten(row_key_kabupaten),
   FOREIGN KEY(row_key_provinsi) REFERENCES dimensi_provinsi(row_key_provinsi),

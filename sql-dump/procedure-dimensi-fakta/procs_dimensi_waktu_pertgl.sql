@@ -17,14 +17,14 @@ SET
 DROP TABLE IF EXISTS temp_waktu;
 
 -- membuat tabel temp untuk memproduksi data waktu
-CREATE TEMPORARY TABLE temp_waktu(kode_waktu INT, tanggal DATE);
+CREATE TEMPORARY TABLE temp_waktu(id_waktu INT, tanggal DATE);
 
 -- loop untuk memproduksi data waktu sebanyak parameter tanggal
 read_loop: LOOP IF @counterLoop > @endCounterLoop THEN LEAVE read_loop;
 
 ELSE
 INSERT INTO
-	temp_waktu(kode_waktu, tanggal)
+	temp_waktu(id_waktu, tanggal)
 VALUES
 	(
 		@counterLoop,
@@ -61,7 +61,7 @@ WHERE
 -- memasukkan data waktu baru ke dalam tabel dimensional
 INSERT INTO
 	dimensi_waktu (
-		kode_waktu,
+		id_waktu,
 		tahun,
 		kuartal,
 		bulan,
@@ -70,7 +70,7 @@ INSERT INTO
 		current_flag
 	)
 SELECT
-	temp_waktu.kode_waktu,
+	temp_waktu.id_waktu,
 	DATE_FORMAT(tanggal, "%Y"),
 	QUARTER(tanggal),
 	CASE
@@ -103,7 +103,7 @@ SELECT
 FROM
 	temp_waktu ON DUPLICATE KEY
 UPDATE
-	dimensi_waktu.kode_waktu = dimensi_waktu.kode_waktu;
+	dimensi_waktu.id_waktu = dimensi_waktu.id_waktu;
 
 -- drop tabel temp
 DROP TABLE IF EXISTS temp_waktu;
