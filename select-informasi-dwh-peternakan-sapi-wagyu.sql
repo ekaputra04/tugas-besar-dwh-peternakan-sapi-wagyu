@@ -1,6 +1,7 @@
 -- =========================================================================================
 -- 																FAKTA PEMASOKAN PAKAN
 -- 									Informasi total pasok dan total biaya pemasokan
+-- 									Informasi total produk dan total penjualan produk
 -- =========================================================================================
 -- =========================================================================================
 -- 																		DIMENSI KABUPATEN
@@ -12,10 +13,13 @@ SELECT
 	dim_kabupaten.`nama_kabupaten`,
 	dim_kabupaten.`nama_provinsi`,
 	SUM(pemasokan_fact.`total_pakan`) AS total_pakan,
-	SUM(pemasokan_fact.`total_biaya_pemasokan`) AS total_biaya_pakan
+	SUM(pemasokan_fact.`total_biaya_pemasokan`) AS total_biaya_pakan,
+	SUM(penjualan_fact.`total_produk`) AS total_produk,
+	SUM(penjualan_fact.`total_penjualan_produk`) AS total_penjualan_produk
 FROM
 	dwh_peternakan_sapi_wagyu.`dimensi_kabupaten` AS dim_kabupaten
 	LEFT JOIN dwh_peternakan_sapi_wagyu.`fakta_pemasokan_pakan` AS pemasokan_fact ON pemasokan_fact.`row_key_kabupaten` = dim_kabupaten.`row_key_kabupaten`
+	LEFT JOIN dwh_peternakan_sapi_wagyu.`fakta_penjualan_produk_daging` AS penjualan_fact ON penjualan_fact.`row_key_kabupaten` = dim_kabupaten.`row_key_kabupaten`
 GROUP BY
 	dim_kabupaten.`id_kabupaten`;
 
@@ -24,10 +28,13 @@ GROUP BY
 SELECT
 	dim_kabupaten.`nama_provinsi`,
 	SUM(pemasokan_fact.`total_pakan`) AS total_pakan,
-	SUM(pemasokan_fact.`total_biaya_pemasokan`) AS total_biaya_pakan
+	SUM(pemasokan_fact.`total_biaya_pemasokan`) AS total_biaya_pakan,
+	SUM(penjualan_fact.`total_produk`) AS total_produk,
+	SUM(penjualan_fact.`total_penjualan_produk`) AS total_penjualan_produk
 FROM
 	dwh_peternakan_sapi_wagyu.`dimensi_kabupaten` AS dim_kabupaten
 	LEFT JOIN dwh_peternakan_sapi_wagyu.`fakta_pemasokan_pakan` AS pemasokan_fact ON pemasokan_fact.`row_key_kabupaten` = dim_kabupaten.`row_key_kabupaten`
+	LEFT JOIN dwh_peternakan_sapi_wagyu.`fakta_penjualan_produk_daging` AS penjualan_fact ON penjualan_fact.`row_key_kabupaten` = dim_kabupaten.`row_key_kabupaten`
 GROUP BY
 	dim_kabupaten.`nama_provinsi`;
 
