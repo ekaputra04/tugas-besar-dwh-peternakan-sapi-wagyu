@@ -1,5 +1,9 @@
 # Tugas Besar Data Warehouse
 
+Mata Kuliah: Pangkalan Data (D)
+
+Dosen Pengampu: Dwi Putra Githa, S.T., M.T.
+
 ## Anggota Kelompok:
 
 Resandy Prisadana (2205551050)
@@ -7,10 +11,6 @@ Resandy Prisadana (2205551050)
 I Putu Eka Putra Juniawan (2205551087)
 
 Made Arya Darma Putra (2205551050)
-
-Mata Kuliah: Pangkalan Data (D)
-
-Dosen Pengampu: Dwi Putra Githa, S.T., M.T.
 
 ## Data Warehouse pada Studi Kasus Peternakan Sapi Wagyu
 

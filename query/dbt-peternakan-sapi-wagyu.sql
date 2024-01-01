@@ -125,7 +125,7 @@ CREATE TABLE tb_pemasokan_pakan(
   id_pegawai INT,
   id_pemasok_pakan INT,
   tanggal_pasok DATETIME,
-  total_biaya_pasok double(10, 2),
+  total_biaya_pasok DECIMAL(10, 2),
   FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai),
   FOREIGN KEY(id_pemasok_pakan) REFERENCES tb_pemasok_pakan(id_pemasok_pakan)
 );
